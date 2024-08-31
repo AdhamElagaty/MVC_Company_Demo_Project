@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using MVC_Company_Demo_Project.Data.Contexts;
+using MVC_Company_Demo_Project.Repository.Interfaces;
+using MVC_Company_Demo_Project.Repository.Repositories;
+
 namespace MVC_Company_Demo_Project.Web
 {
     public class Program
@@ -8,6 +13,12 @@ namespace MVC_Company_Demo_Project.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<CompanyDbContext>(option => {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
             var app = builder.Build();
 
