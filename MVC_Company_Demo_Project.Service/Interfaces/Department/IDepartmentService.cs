@@ -13,10 +13,10 @@ namespace MVC_Company_Demo_Project.Service.Interfaces
 
         IEnumerable<Department> GetAll();
 
-        void Add(Department entity);
+        void Add(Department department);
 
-        void Update(Department entity);
+        void Update(Department department);
 
-        void Delete(Department entity);
+        void Delete(Department department);
     }
 }

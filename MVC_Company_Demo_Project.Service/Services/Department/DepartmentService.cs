@@ -18,12 +18,17 @@ namespace MVC_Company_Demo_Project.Service.Services
             _departmentRepository = departmentRepository;
         }
 
-        public void Add(Department entity)
+        public void Add(Department department)
         {
-            throw new NotImplementedException();
+            var mappedDepartment = new Department
+            {
+                Code = department.Code,
+                Name = department.Name,
+            };
+            _departmentRepository.Add(mappedDepartment);
         }
 
-        public void Delete(Department entity)
+        public void Delete(Department department)
         {
             throw new NotImplementedException();
         }
