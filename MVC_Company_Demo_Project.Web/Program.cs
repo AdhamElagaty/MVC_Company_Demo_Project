@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Company_Demo_Project.Data.Contexts;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Repository.Repositories;
+using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Services;
 
 namespace MVC_Company_Demo_Project.Web
 {
@@ -19,6 +21,7 @@ namespace MVC_Company_Demo_Project.Web
             });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
             var app = builder.Build();
 
