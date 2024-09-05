@@ -46,5 +46,16 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                 return View(department);
             }
         }
+
+        [HttpGet]
+        public IActionResult Details(int? id) 
+        {
+            var department = _departmentService.GetById(id);
+
+            if (department == null)
+                return RedirectToAction("NotFoundPage","Home", null);
+
+            return View(department);
+        }
     }
 }

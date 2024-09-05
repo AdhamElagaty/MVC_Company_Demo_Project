@@ -39,9 +39,17 @@ namespace MVC_Company_Demo_Project.Service.Services
             return departments;
         }
 
-        public Department GetById(int id)
+        public Department GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id is null)
+                return null;
+
+            var depatment = _departmentRepository.GetById(id.Value);
+
+            if (depatment is null)
+                return null;
+
+            return depatment;
         }
 
         public void Update(Department entity)
