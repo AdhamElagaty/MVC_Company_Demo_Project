@@ -17,6 +17,6 @@ namespace MVC_Company_Demo_Project.Data.Models
         public DateTime HiringDate { get; set; }
         public string ImageUrl { get; set; }
         public int? DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
     }
 }

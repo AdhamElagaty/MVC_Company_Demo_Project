@@ -23,6 +23,7 @@ namespace MVC_Company_Demo_Project.Web
             //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             var app = builder.Build();
 

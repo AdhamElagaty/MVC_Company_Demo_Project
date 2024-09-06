@@ -39,8 +39,16 @@ namespace MVC_Company_Demo_Project.Service.Services
         {
             var mappedEmployee = new Employee()
             {
-                Id = employee.Id,
                 Name = employee.Name,
+                Age = employee.Age,
+                HiringDate = employee.HiringDate,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                ImageUrl = employee.ImageUrl,
+                Address = employee.Address,
+                Salary = employee.Salary,
+                DepartmentId = employee.DepartmentId,
+                IsDeleted = false,
             };
 
             _unitOfWork.EmployeeRepository.Add(mappedEmployee);
