@@ -87,5 +87,17 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                 return View(department);
             }
         }
+
+        public IActionResult Delete(int? id) 
+        {
+            var department = _departmentService.GetById(id.Value);
+
+            if (department is  null)
+                return RedirectToAction("NotFoundPage", "Home", null);
+
+            _departmentService.Delete(department);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
