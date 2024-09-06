@@ -48,14 +48,44 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int? id) 
+        public IActionResult Details(int? id, string viewName = "Details") 
         {
             var department = _departmentService.GetById(id);
 
             if (department == null)
                 return RedirectToAction("NotFoundPage","Home", null);
 
-            return View(department);
+            return View(viewName,department);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int? id)
+        {
+            return Details(id, "Update");
+        }
+
+        [HttpPost]
+        public IActionResult Update(int? id, Department department)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (department.Id != id.Value)
+                        return RedirectToAction("NotFoundPage", "Home", null);
+
+                    _departmentService.Update(department);
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("DepartmentError", "Validation Error");
+
+                return View(department);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("DepartmentError", ex.Message);
+                return View(department);
+            }
         }
     }
 }

@@ -52,9 +52,9 @@ namespace MVC_Company_Demo_Project.Service.Services
             return depatment;
         }
 
-        public void Update(Department entity)
+        public void Update(Department department)
         {
-            throw new NotImplementedException();
+            _departmentRepository.Update(department);
         }
     }
 }
