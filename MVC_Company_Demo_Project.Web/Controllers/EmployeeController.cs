@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Services;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
@@ -57,10 +58,34 @@ namespace MVC_Company_Demo_Project.Web.Controllers
             return View(viewName, employee);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Update(int? id)
         {
             return Details(id, "Update");
+        }
+
+        [HttpPost]
+        public IActionResult Update(int? id, Employee employee)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (employee.Id != id.Value)
+                        return RedirectToAction("NotFoundPage", "Home", null);
+
+                    _employeeService.Update(employee);
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("EmployeeError", "Validation Error");
+
+                return View(employee);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("EmployeeError", ex.Message);
+                return View(employee);
+            }
         }
 
         public IActionResult Delete(int id)
