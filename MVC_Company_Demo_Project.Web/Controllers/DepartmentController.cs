@@ -1,21 +1,103 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
+using MVC_Company_Demo_Project.Service.Interfaces;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepartmentService _departmentService;
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentService departmentService)
         {
-            _departmentRepository = departmentRepository;
+            _departmentService = departmentService;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
-            var department = _departmentRepository.GetAll();
+            var department = _departmentService.GetAll();
             return View(department);
+        }
+
+        [HttpGet]
+        public IActionResult Create() 
+        { 
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Department department)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _departmentService.Add(department);
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("DepartmentError", "Validation Error");
+
+                return View(department);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("DepartmentError", ex.Message);
+                return View(department);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int? id, string viewName = "Details") 
+        {
+            var department = _departmentService.GetById(id);
+
+            if (department == null)
+                return RedirectToAction("NotFoundPage","Home", null);
+
+            return View(viewName,department);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int? id)
+        {
+            return Details(id, "Update");
+        }
+
+        [HttpPost]
+        public IActionResult Update(int? id, Department department)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (department.Id != id.Value)
+                        return RedirectToAction("NotFoundPage", "Home", null);
+
+                    _departmentService.Update(department);
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("DepartmentError", "Validation Error");
+
+                return View(department);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("DepartmentError", ex.Message);
+                return View(department);
+            }
+        }
+
+        public IActionResult Delete(int? id) 
+        {
+            var department = _departmentService.GetById(id.Value);
+
+            if (department is  null)
+                return RedirectToAction("NotFoundPage", "Home", null);
+
+            _departmentService.Delete(department);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
