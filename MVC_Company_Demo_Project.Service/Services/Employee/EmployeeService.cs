@@ -1,6 +1,7 @@
 ﻿using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace MVC_Company_Demo_Project.Service.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public Employee GetById(int? id)
+        public EmployeeDto GetById(int? id)
         {
             if (id is null)
                 return null;
@@ -26,48 +27,109 @@ namespace MVC_Company_Demo_Project.Service.Services
             if (employee is null)
                 return null;
 
-            return employee;
+            var mappedEmployees = new EmployeeDto
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Address = employee.Address,
+                Age = employee.Age,
+                CreateAt = employee.CreateAt,
+                DepartmentId = employee.DepartmentId,
+                Email = employee.Email,
+                HiringDate = employee.HiringDate,
+                ImageUrl = employee.ImageUrl,
+                IsDeleted = employee.IsDeleted,
+                PhoneNumber = employee.PhoneNumber,
+                Salary = employee.Salary
+            };
+            return mappedEmployees;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<EmployeeDto> GetAll()
         {
             var employees = _unitOfWork.EmployeeRepository.GetAll();
-            return employees;
+            var mappedEmployees = employees.Select(x => new EmployeeDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Address = x.Address,
+                Age = x.Age,
+                CreateAt = x.CreateAt,
+                DepartmentId = x.DepartmentId,
+                Email = x.Email,
+                HiringDate = x.HiringDate,
+                ImageUrl = x.ImageUrl,
+                IsDeleted = x.IsDeleted,
+                PhoneNumber = x.PhoneNumber,
+                Salary = x.Salary
+            });
+            return mappedEmployees;
         }
 
-        public IEnumerable<Employee> GetEmployeeByName(string name)
-            => _unitOfWork.EmployeeRepository.GetEmployeeByName(name);
-
-        public void Add(Employee employee)
+        public IEnumerable<EmployeeDto> GetEmployeeByName(string name)
         {
+            var employees = _unitOfWork.EmployeeRepository.GetEmployeeByName(name);
+            var mappedEmployees = employees.Select(x => new EmployeeDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Address = x.Address,
+                Age = x.Age,
+                CreateAt = x.CreateAt,
+                DepartmentId = x.DepartmentId,
+                Email = x.Email,
+                HiringDate = x.HiringDate,
+                ImageUrl = x.ImageUrl,
+                IsDeleted = x.IsDeleted,
+                PhoneNumber = x.PhoneNumber,
+                Salary = x.Salary
+            });
+            return mappedEmployees;
+        }
+
+        public void Add(EmployeeDto employeeDto)
+        {
+            //manual mapping
             var mappedEmployee = new Employee()
             {
-                Name = employee.Name,
-                Age = employee.Age,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                ImageUrl = employee.ImageUrl,
-                Address = employee.Address,
-                Salary = employee.Salary,
-                DepartmentId = employee.DepartmentId,
+                Name = employeeDto.Name,
+                Age = employeeDto.Age,
+                HiringDate = employeeDto.HiringDate,
+                Email = employeeDto.Email,
+                PhoneNumber = employeeDto.PhoneNumber,
+                ImageUrl = employeeDto.ImageUrl,
+                Address = employeeDto.Address,
+                Salary = employeeDto.Salary,
+                DepartmentId = employeeDto.DepartmentId,
                 IsDeleted = false,
             };
 
             _unitOfWork.EmployeeRepository.Add(mappedEmployee);
             _unitOfWork.Complete();
-
         }
 
-        public void Update(Employee employee)
+        public void Update(EmployeeDto employee)
         {
-            _unitOfWork.EmployeeRepository.Update(employee);
+            //_unitOfWork.EmployeeRepository.Update(employee);
             _unitOfWork.Complete();
         }
 
-        public void Delete(Employee employee)
+        public void Delete(EmployeeDto employeeDto)
         {
-            _unitOfWork.EmployeeRepository.Delete(employee);
+            var mappedEmployee = new Employee()
+            {
+                Name = employeeDto.Name,
+                Age = employeeDto.Age,
+                HiringDate = employeeDto.HiringDate,
+                Email = employeeDto.Email,
+                PhoneNumber = employeeDto.PhoneNumber,
+                ImageUrl = employeeDto.ImageUrl,
+                Address = employeeDto.Address,
+                Salary = employeeDto.Salary,
+                DepartmentId = employeeDto.DepartmentId,
+                IsDeleted = false,
+            };
+            _unitOfWork.EmployeeRepository.Delete(mappedEmployee);
             _unitOfWork.Complete();
         }
     }

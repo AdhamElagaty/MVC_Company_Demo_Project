@@ -2,6 +2,7 @@
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Service.Interfaces;
 using MVC_Company_Demo_Project.Service.Services;
+using MVC_Company_Demo_Project.Service.Services.Dto;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
@@ -18,7 +19,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         [HttpGet]
         public IActionResult Index(string searchInp)
         {
-            IEnumerable<Employee> employees = new List<Employee>();
+            IEnumerable<EmployeeDto> employees = new List<EmployeeDto>();
             if (string.IsNullOrEmpty(searchInp))
                 employees = _employeeService.GetAll();
             else
@@ -35,7 +36,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeDto employee)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int? id, Employee employee)
+        public IActionResult Update(int? id, EmployeeDto employee)
         {
             try
             {

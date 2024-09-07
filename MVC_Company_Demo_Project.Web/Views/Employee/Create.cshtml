@@ -1,10 +1,9 @@
-﻿@using MVC_Company_Demo_Project.Data.Models
-@model MVC_Company_Demo_Project.Data.Models.Employee
+﻿@model EmployeeDto
 @{
     ViewData["Title"] = "Create";
 }
 @{
-    var departments = new SelectList(ViewBag.Departments, nameof(Department.Id), nameof(Department.Name));
+    var departments = new SelectList(ViewBag.Departments, nameof(DepartmentDto.Id), nameof(DepartmentDto.Name));
 }
 
 <h1>Create New Employee</h1>
