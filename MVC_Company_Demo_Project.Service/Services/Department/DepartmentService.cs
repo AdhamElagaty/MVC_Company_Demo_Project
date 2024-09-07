@@ -1,4 +1,5 @@
-﻿using MVC_Company_Demo_Project.Data.Models;
+﻿using AutoMapper;
+using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Service.Interfaces;
 using MVC_Company_Demo_Project.Service.Services.Dto;
@@ -13,10 +14,12 @@ namespace MVC_Company_Demo_Project.Service.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public DepartmentService(IUnitOfWork unitOfWork)
+        public DepartmentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public DepartmentDto GetById(int? id)
@@ -28,39 +31,20 @@ namespace MVC_Company_Demo_Project.Service.Services
             if (department is null)
                 return null;
 
-            var mappedDepartment = new DepartmentDto
-            {
-                Id = department.Id,
-                Name = department.Name,
-                Code = department.Code,
-                IsDeleted = department.IsDeleted,
-                CreateAt = department.CreateAt,
-            };
+            var mappedDepartment = _mapper.Map<DepartmentDto>(department);
             return mappedDepartment;
         }
 
         public IEnumerable<DepartmentDto> GetAll()
         {
             var departments = _unitOfWork.DepartmentRepository.GetAll();
-            var mappedDepartments = departments.Select(x => new DepartmentDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Code = x.Code,
-                IsDeleted = x.IsDeleted,
-                CreateAt = x.CreateAt,
-            });
+            var mappedDepartments = _mapper.Map<IEnumerable<DepartmentDto>>(departments);
             return mappedDepartments;
         }
 
         public void Add(DepartmentDto departmentDto)
         {
-            var mappedDepartment = new Department()
-            {
-                Code = departmentDto.Code,
-                Name = departmentDto.Name,
-                CreateAt = DateTime.Now,
-            };
+            var mappedDepartment = _mapper.Map<Department>(departmentDto);
 
             _unitOfWork.DepartmentRepository.Add(mappedDepartment);
 
@@ -79,13 +63,7 @@ namespace MVC_Company_Demo_Project.Service.Services
 
         public void Delete(DepartmentDto departmentDto)
         {
-            var mappedDepartment = new Department
-            {
-                Id= departmentDto.Id,
-                Name = departmentDto.Name,
-                Code = departmentDto.Code,
-                CreateAt = departmentDto.CreateAt,
-            };
+            var mappedDepartment = _mapper.Map<Department>(departmentDto);
             _unitOfWork.DepartmentRepository.Delete(mappedDepartment);
 
             _unitOfWork.Complete();
