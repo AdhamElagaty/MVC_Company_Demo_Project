@@ -14,9 +14,13 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string searchInp)
         {
-            var employees = _employeeService.GetAll();
+            IEnumerable<Employee> employees = new List<Employee>();
+            if (string.IsNullOrEmpty(searchInp))
+                employees = _employeeService.GetAll();
+            else
+                employees = _employeeService.GetEmployeeByName(searchInp);
             return View(employees);
         }
 

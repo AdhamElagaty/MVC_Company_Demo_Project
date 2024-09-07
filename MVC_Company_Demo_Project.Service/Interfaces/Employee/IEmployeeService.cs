@@ -13,6 +13,8 @@ namespace MVC_Company_Demo_Project.Service.Interfaces
 
         IEnumerable<Employee> GetAll();
 
+        public IEnumerable<Employee> GetEmployeeByName(string name);
+
         void Add(Employee department);
 
         void Update(Employee department);

@@ -35,6 +35,9 @@ namespace MVC_Company_Demo_Project.Service.Services
             return employees;
         }
 
+        public IEnumerable<Employee> GetEmployeeByName(string name)
+            => _unitOfWork.EmployeeRepository.GetEmployeeByName(name);
+
         public void Add(Employee employee)
         {
             var mappedEmployee = new Employee()
