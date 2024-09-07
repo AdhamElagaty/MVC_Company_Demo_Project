@@ -3,6 +3,7 @@ using MVC_Company_Demo_Project.Data.Contexts;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Repository.Repositories;
 using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Mapping;
 using MVC_Company_Demo_Project.Service.Services;
 
 namespace MVC_Company_Demo_Project.Web
@@ -24,6 +25,8 @@ namespace MVC_Company_Demo_Project.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddAutoMapper(x => x.AddProfile(new EmployeeProfile()));
+            builder.Services.AddAutoMapper(x => x.AddProfile(new DepartmentProfile()));
 
             var app = builder.Build();
 

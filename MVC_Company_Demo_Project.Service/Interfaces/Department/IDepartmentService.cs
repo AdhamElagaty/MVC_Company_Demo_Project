@@ -1,4 +1,5 @@
 ﻿using MVC_Company_Demo_Project.Data.Models;
+using MVC_Company_Demo_Project.Service.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,14 @@ namespace MVC_Company_Demo_Project.Service.Interfaces
 {
     public interface IDepartmentService
     {
-        Department GetById(int? id);
+        DepartmentDto GetById(int? id);
 
-        IEnumerable<Department> GetAll();
+        IEnumerable<DepartmentDto> GetAll();
 
-        void Add(Department department);
+        void Add(DepartmentDto departmentDto);
 
-        void Update(Department department);
+        void Update(DepartmentDto departmentDto);
 
-        void Delete(Department department);
+        void Delete(DepartmentDto departmentDto);
     }
 }

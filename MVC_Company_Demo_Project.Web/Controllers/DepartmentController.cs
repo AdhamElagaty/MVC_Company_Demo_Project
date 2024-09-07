@@ -2,6 +2,7 @@
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Services.Dto;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
@@ -27,7 +28,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(DepartmentDto department)
         {
             try
             {
@@ -65,7 +66,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int? id, Department department)
+        public IActionResult Update(int? id, DepartmentDto department)
         {
             try
             {

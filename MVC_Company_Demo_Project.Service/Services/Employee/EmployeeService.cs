@@ -1,9 +1,13 @@
-﻿using MVC_Company_Demo_Project.Data.Models;
+﻿using AutoMapper;
+using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
+using MVC_Company_Demo_Project.Service.Helpers;
 using MVC_Company_Demo_Project.Service.Interfaces;
+using MVC_Company_Demo_Project.Service.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,12 +16,14 @@ namespace MVC_Company_Demo_Project.Service.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public Employee GetById(int? id)
+        public EmployeeDto GetById(int? id)
         {
             if (id is null)
                 return null;
@@ -26,45 +32,56 @@ namespace MVC_Company_Demo_Project.Service.Services
             if (employee is null)
                 return null;
 
-            return employee;
+            EmployeeDto employeeDto = _mapper.Map<EmployeeDto>(employee);
+            return employeeDto;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<EmployeeDto> GetAll()
         {
             var employees = _unitOfWork.EmployeeRepository.GetAll();
-            return employees;
+            IEnumerable<EmployeeDto> mappedEmployees = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+            return mappedEmployees;
         }
 
-        public void Add(Employee employee)
+        public IEnumerable<EmployeeDto> GetEmployeeByName(string name)
         {
-            var mappedEmployee = new Employee()
-            {
-                Name = employee.Name,
-                Age = employee.Age,
-                HiringDate = employee.HiringDate,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                ImageUrl = employee.ImageUrl,
-                Address = employee.Address,
-                Salary = employee.Salary,
-                DepartmentId = employee.DepartmentId,
-                IsDeleted = false,
-            };
+            var employees = _unitOfWork.EmployeeRepository.GetEmployeeByName(name);
+            IEnumerable<EmployeeDto> mappedEmployees = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+            return mappedEmployees;
+        }
 
-            _unitOfWork.EmployeeRepository.Add(mappedEmployee);
+        public void Add(EmployeeDto employeeDto)
+        {
+            //manual mapping
+            //var mappedEmployee = new Employee()
+            //{
+            //    Name = employeeDto.Name,
+            //    Age = employeeDto.Age,
+            //    HiringDate = employeeDto.HiringDate,
+            //    Email = employeeDto.Email,
+            //    PhoneNumber = employeeDto.PhoneNumber,
+            //    ImageUrl = employeeDto.ImageUrl,
+            //    Address = employeeDto.Address,
+            //    Salary = employeeDto.Salary,
+            //    DepartmentId = employeeDto.DepartmentId,
+            //    IsDeleted = false,
+            //};
+            employeeDto.ImageUrl = DocumentSettings.UploadFile(employeeDto.Image, "Images");
+            Employee employee = _mapper.Map<Employee>(employeeDto);
+            _unitOfWork.EmployeeRepository.Add(employee);
             _unitOfWork.Complete();
-
         }
 
-        public void Update(Employee employee)
+        public void Update(EmployeeDto employee)
         {
-            _unitOfWork.EmployeeRepository.Update(employee);
+            //_unitOfWork.EmployeeRepository.Update(employee);
             _unitOfWork.Complete();
         }
 
-        public void Delete(Employee employee)
+        public void Delete(EmployeeDto employeeDto)
         {
-            _unitOfWork.EmployeeRepository.Delete(employee);
+            Employee mappedEmployee = _mapper.Map<Employee>(employeeDto);
+            _unitOfWork.EmployeeRepository.Delete(mappedEmployee);
             _unitOfWork.Complete();
         }
     }
