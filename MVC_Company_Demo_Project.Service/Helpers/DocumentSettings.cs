@@ -14,7 +14,7 @@ namespace MVC_Company_Demo_Project.Service.Helpers
             //1.Get FolderPath
             //var FilePath = @"E:\Route\Route practical\MVC\Demos\Company.web\wwwroot\File\Images\";
 
-            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\File", FolderName);
+            var FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", FolderName);
 
             //2. Get FilePath
             //Store In DataBase

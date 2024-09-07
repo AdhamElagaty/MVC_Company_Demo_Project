@@ -17,7 +17,9 @@ namespace MVC_Company_Demo_Project.Repository.Repositories
             _context = context;
         }
 
-        public IEnumerable<Employee> GetEmployeeByName(string name) => _context.Employees.Where(x => x.Name.Trim().ToLower().Contains(name.Trim().ToLower()));
+        public IEnumerable<Employee> GetEmployeeByName(string name) => _context.Employees.Where(x => x.Name.Trim().ToLower().Contains(name.Trim().ToLower())
+        || x.Email.Trim().ToLower().Contains(name.Trim().ToLower())
+            || x.PhoneNumber.Trim().ToLower().Contains(name.Trim().ToLower())).ToList();
 
         public IEnumerable<Employee> GetEmployeesByAddress(string address) => _context.Employees.Where(x => x.Address == address);
     }
