@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
+using MVC_Company_Demo_Project.Service.Helpers;
 using MVC_Company_Demo_Project.Service.Interfaces;
 using MVC_Company_Demo_Project.Service.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,7 +66,7 @@ namespace MVC_Company_Demo_Project.Service.Services
             //    DepartmentId = employeeDto.DepartmentId,
             //    IsDeleted = false,
             //};
-
+            employeeDto.ImageUrl = DocumentSettings.UploadFile(employeeDto.Image, "Images");
             Employee employee = _mapper.Map<Employee>(employeeDto);
             _unitOfWork.EmployeeRepository.Add(employee);
             _unitOfWork.Complete();

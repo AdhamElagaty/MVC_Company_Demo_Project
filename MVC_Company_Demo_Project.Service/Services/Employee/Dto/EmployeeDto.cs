@@ -1,4 +1,5 @@
-﻿using MVC_Company_Demo_Project.Data.Models;
+﻿using Microsoft.AspNetCore.Http;
+using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Service.Services.Dto;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace MVC_Company_Demo_Project.Service.Services.Dto
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime HiringDate { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public IFormFile Image { get; set; }
         public DateTime CreateAt { get; set; }
         public bool? IsDeleted { get; set; }
         public int? DepartmentId { get; set; }
