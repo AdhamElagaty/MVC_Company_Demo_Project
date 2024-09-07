@@ -41,13 +41,10 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                ModelState.AddModelError("EmployeeError", "Validation Error");
-
                 return View(employee);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("EmployeeError", ex.Message);
                 return View(employee);
             }
         }
