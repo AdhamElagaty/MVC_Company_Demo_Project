@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 @{
-    // var departments = new SelectList(ViewBag.Departments, nameof(Department.Id), nameof(Department.Name));
+    var departments = new SelectList(ViewBag.Departments, nameof(Department.Id), nameof(Department.Name));
 }
 
 <h1>Create New Employee</h1>
@@ -44,12 +44,12 @@
         <label class="col-form-label" asp-for="HiringDate"></label>
         <input type="date" asp-for="HiringDate" class="form-control" />
     </div>
-   @*  <div class="form-group">
+    <div class="form-group">
         <label class="col-form-label" asp-for="DepartmentId"></label>
         <select class="form-control" asp-items="@departments" asp-for="DepartmentId">
             <option value="@null">--Select Department</option>
         </select>
-    </div> *@
+    </div>
     <div class="form-group">
         <label class="col-form-label" asp-for="ImageUrl">Image</label>
         <input type="file" class="form-control-file" asp-for="ImageUrl" />

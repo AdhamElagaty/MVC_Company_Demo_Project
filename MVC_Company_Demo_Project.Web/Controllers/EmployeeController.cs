@@ -8,9 +8,11 @@ namespace MVC_Company_Demo_Project.Web.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeeController(IEmployeeService employeeService)
+        private readonly IDepartmentService _departmentService;
+        public EmployeeController(IEmployeeService employeeService, IDepartmentService departmentService)
         {
             _employeeService = employeeService;
+            _departmentService = departmentService;
         }
 
         [HttpGet]
@@ -27,6 +29,8 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var departments = _departmentService.GetAll();
+            ViewBag.Departments = departments;
             return View();
         }
 
