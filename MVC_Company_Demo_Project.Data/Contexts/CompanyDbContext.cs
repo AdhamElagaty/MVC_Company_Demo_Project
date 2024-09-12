@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MVC_Company_Demo_Project.Data.Models;
 using System;
 using System.Buffers.Text;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MVC_Company_Demo_Project.Data.Contexts
 {
-    public class CompanyDbContext : DbContext
+    public class CompanyDbContext : IdentityDbContext<ApplicationUser>
     {
         public CompanyDbContext(DbContextOptions<CompanyDbContext> options) : base(options)
         {
