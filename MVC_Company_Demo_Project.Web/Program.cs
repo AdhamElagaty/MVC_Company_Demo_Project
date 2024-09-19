@@ -52,7 +52,7 @@ namespace MVC_Company_Demo_Project.Web
                 options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
-                options.Cookie.Name = "Omar Cookies";
+                options.Cookie.Name = "AdhamCookies";
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Strict;
             });
