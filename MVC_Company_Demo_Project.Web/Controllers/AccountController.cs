@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Web.Models;
 
@@ -75,6 +76,26 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel input)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(input.Email);
+                if (user is not null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var url = Url.Action("ResetPassword", "Account", new { Email = input.Email, Token = token }, Request.Scheme);
+                }
+            }
+            return View(input);
         }
     }
 }
