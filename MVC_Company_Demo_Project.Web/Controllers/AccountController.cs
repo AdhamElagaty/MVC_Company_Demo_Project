@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using MVC_Company_Demo_Project.Data.Models;
+using MVC_Company_Demo_Project.Service.Helpers;
 using MVC_Company_Demo_Project.Web.Models;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
@@ -93,9 +93,21 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var url = Url.Action("ResetPassword", "Account", new { Email = input.Email, Token = token }, Request.Scheme);
+                    var email = new Email
+                    {
+                        Body = url,
+                        Subject = "Reset Password",
+                        To = input.Email
+                    };
+                    EmailSettings.SendEmail(email);
                 }
             }
-            return View(input);
+            return RedirectToAction(nameof(CheckYourInbox));
+        }
+
+        public IActionResult CheckYourInbox()
+        {
+            return View();
         }
     }
 }
