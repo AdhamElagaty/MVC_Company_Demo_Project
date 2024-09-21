@@ -24,5 +24,16 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                     .Where(user => user.NormalizedEmail.Trim().Contains(searchInp.Trim().ToUpper())).ToListAsync();
             return View(users);
         }
+
+        public async Task<IActionResult> Details(string id, string viewName = "Details")
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user is null)
+                return NotFound();
+
+            return View(viewName, user);
+        }
+
     }
 }
