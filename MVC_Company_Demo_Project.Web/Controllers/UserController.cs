@@ -2,16 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Company_Demo_Project.Data.Models;
+using MVC_Company_Demo_Project.Web.Models;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger _logger;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, ILogger<ApplicationUser> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(string searchInp)
@@ -32,7 +35,57 @@ namespace MVC_Company_Demo_Project.Web.Controllers
             if (user is null)
                 return NotFound();
 
+            if (viewName == "Update")
+            {
+                var userUpdateViewModel = new UserUpdateViewModel
+                {
+                    Id = user.Id,
+                    UserName = user.UserName
+                };
+                return View(viewName, userUpdateViewModel);
+            }
+
             return View(viewName, user);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
+        {
+            return await Details(id, "Update");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(string id, UserUpdateViewModel applicationUser)
+        {
+            if (id != applicationUser.Id)
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+
+                    if (user is null)
+                        return NotFound();
+
+                    user.UserName = applicationUser.UserName;
+                    user.NormalizedUserName = applicationUser.UserName.ToUpper();
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User updated successfully");
+                        return RedirectToAction("Index");
+                    }
+                    foreach (var error in result.Errors)
+                        _logger.LogError(error.Description);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                }
+            }
+            return View("Update", applicationUser);
         }
 
     }
