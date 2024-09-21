@@ -88,5 +88,25 @@ namespace MVC_Company_Demo_Project.Web.Controllers
             return View("Update", applicationUser);
         }
 
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user is null)
+                    return NotFound();
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                    return RedirectToAction("Index");
+                foreach (var error in result.Errors)
+                    _logger.LogError(error.Description);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
