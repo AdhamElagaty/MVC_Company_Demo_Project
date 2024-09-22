@@ -35,7 +35,7 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                 };
                 var result = await _userManager.CreateAsync(user, input.Password);
                 if (result.Succeeded)
-                    return RedirectToAction("SignIn");
+                    return RedirectToAction("Login");
 
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
@@ -132,6 +132,11 @@ namespace MVC_Company_Demo_Project.Web.Controllers
                 }
             }
             return View(input);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

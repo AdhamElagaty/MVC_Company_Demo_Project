@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC_Company_Demo_Project.Data.Models;
 using MVC_Company_Demo_Project.Repository.Interfaces;
 using MVC_Company_Demo_Project.Service.Interfaces;
@@ -6,6 +7,7 @@ using MVC_Company_Demo_Project.Service.Services.Dto;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
