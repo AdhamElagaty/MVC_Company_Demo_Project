@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Company_Demo_Project.Web.Models;
 using System.Diagnostics;
 
 namespace MVC_Company_Demo_Project.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,6 +29,11 @@ namespace MVC_Company_Demo_Project.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult NotFoundPage()
+        {
+            return View();
         }
     }
 }
